@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Countdown Timer By Prathamesh</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  body, html {
+    height: 100%;
+    background: #121212; /* deep dark background */
+    font-family: 'Orbitron', sans-serif;
+    color: #39c0ba; /* teal-ish neon */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: #39c0ba;
+  }
+
+  form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  input[type="number"] {
+    width: 180px;
+    font-size: 1.8rem;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 2px solid #39c0ba;
+    background: #1f1f1f;
+    color: #39c0ba;
+    text-align: center;
+    transition: border-color 0.3s ease;
+  }
+  input[type="number"]:focus {
+    border-color: #5fdcdc;
+    outline: none;
+  }
+
+  input[type="submit"] {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    padding: 10px 30px;
+    border-radius: 12px;
+    border: 2px solid #39c0ba;
+    background: transparent;
+    color: #39c0ba;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  input[type="submit"]:hover {
+    background-color: #39c0ba;
+    color: #121212;
+  }
+
+  #msg {
+    margin-top: 3rem;
+    font-size: 5rem;
+    font-weight: 700;
+    color: #5fdcdc;
+    text-shadow: 0 0 10px #2e8b8b;
+    min-height: 100px;
+    user-select: none;
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+    input[type="number"] {
+      width: 140px;
+      font-size: 1.3rem;
+    }
+    input[type="submit"] {
+      font-size: 1.3rem;
+      padding: 8px 20px;
+    }
+    #msg {
+      font-size: 3rem;
+      min-height: 70px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Countdown Timer</h1>
+
+<form onsubmit="startTimer(event)">
+  <input type="number" id="time" placeholder="Enter time in seconds" min="1" />
+  <input type="submit" value="Start" />
+</form>
+
+<div id="msg"></div>
+
+<audio id="au1" src="beep.mp3" preload="auto"></audio>
+
+<script>
+  function startTimer(event) {
+    event.preventDefault();
+
+    const timeInput = document.getElementById("time");
+    const msg = document.getElementById("msg");
+    const beep = document.getElementById("au1");
+
+    let t = parseInt(timeInput.value);
+
+    if (!t || t < 1) {
+      alert("Please enter a valid time (minimum 1 second)");
+      msg.textContent = "";
+      timeInput.focus();
+      return;
+    }
+
+    timeInput.disabled = true;
+
+    function updateTime() {
+      if (t > 0) {
+        msg.textContent = `${t} second${t > 1 ? 's' : ''}`;
+        t--;
+        setTimeout(updateTime, 1000);
+      } else {
+        msg.textContent = "Time's up!";
+        beep.play();
+        timeInput.disabled = false;
+        timeInput.value = "";
+      }
+    }
+    updateTime();
+  }
+</script>
+
+</body>
+</html>
